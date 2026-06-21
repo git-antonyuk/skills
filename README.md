@@ -16,9 +16,10 @@ skills/
 
 ## Skills
 
-| Skill | What it does |
-|---|---|
-| `learning-worked-example` | Tutors a topic using the Worked Examples method — atomic, step-by-step breakdowns for better retention. |
+| Skill | Category | What it does |
+|---|---|---|
+| `learning-worked-example` | learning | Tutors a topic using the Worked Examples method — atomic, step-by-step breakdowns for better retention. |
+| `diet-coach` | health/fitness | Evidence-based, dynamic diet & weight-loss coach — reads a personal profile + progress log each run and recomputes calories, protein, phase (grind/chill) and steps. Answers in the user's language. |
 
 ## Installing a skill
 
