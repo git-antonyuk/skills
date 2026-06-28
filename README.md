@@ -20,6 +20,9 @@ skills/
 |---|---|---|
 | `learning-worked-example` | learning | Tutors a topic using the Worked Examples method — atomic, step-by-step breakdowns for better retention. |
 | `diet-coach` | health/fitness | Evidence-based, dynamic diet & weight-loss coach — reads a personal profile + progress log each run and recomputes calories, protein, phase (grind/chill) and steps. Answers in the user's language. |
+| `code-kiss` | engineering | Keep It Simple — biases code toward the simplest solution that solves the actual problem; flags over-engineering, premature flexibility, and needless cleverness. Stack-agnostic. |
+| `code-dry` | engineering | Don't Repeat Yourself — gives each piece of knowledge one authoritative source, while guarding against premature/over-abstraction (Rule of Three). Stack-agnostic. |
+| `pr-review` | engineering | Slow, adversarial PR/diff review that optimizes for finding real bugs (not approving fast) — built to be run independently by several models and synthesized. Stack- and model-agnostic. |
 
 ## Installing a skill
 
