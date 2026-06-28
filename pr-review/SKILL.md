@@ -3,9 +3,9 @@ name: pr-review
 description: >-
   Review a pull request or diff slowly and adversarially to find real bugs —
   not to approve fast. Use when asked to review a PR, a diff, or a change before
-  merging. Optimizes for catching correctness, security, and edge-case failures,
-  is willing to recommend abandoning a flawed PR, and is designed to be run
-  independently by several models and synthesized. Stack- and model-agnostic.
+  merging. Launches three independent reviewer subagents (Claude Opus, Composer
+  Fast, GPT), synthesizes findings, and verifies each against the code. Stack-
+  agnostic.
 metadata:
   category: engineering
 ---
@@ -16,9 +16,6 @@ Review to **find bugs**, not to bless the change. The goal is not throughput —
 it's confidence that the diff is correct, safe, and worth merging. Spend the time
 the author saved writing it on understanding whether it actually works. A slow,
 skeptical review that surfaces one real defect beats a fast LGTM every time.
-
-Use models deliberately to raise quality: throw several of them at the same PR,
-review in fresh passes, and ask how the code fails before deciding it's fine.
 
 ## Mindset
 
@@ -31,24 +28,63 @@ review in fresh passes, and ask how the code fails before deciding it's fine.
   critiquing it. If you can't explain the mechanism, you can't review it — read
   more first.
 
-## The multi-model workflow (the point of this skill)
+## Reviewer models (exactly three)
 
-This skill is meant to be run **independently by several models** — different
-models, or separate fresh runs of the same one — and the findings synthesized:
+Launch **three** independent reviewers in **parallel** via the Task tool. Use
+only these families — no extras, no substitutes:
 
-1. **Run the same review prompt on multiple models** against the same diff, each
-   with a clean context — no shared conversation, no peeking at each other's output.
-2. **Pool the findings.** Cross-model agreement is signal: a bug that several
-   models flag independently is almost certainly real.
-3. **Treat single-model findings as suspects, not facts.** LLM reviews hallucinate
-   and produce false positives. Before reporting any finding, re-read the actual
-   code and confirm the bug exists — quote the lines that prove it. Drop anything
-   you can't substantiate.
-4. **Synthesize, deduplicate, rank by severity.** One merged report, not three.
+| # | Family |
+|---|---|
+| 1 | **Claude Opus** — latest available |
+| 2 | **Composer Fast** — latest available |
+| 3 | **GPT** — latest available |
 
-When only one model is available, approximate this with **multiple passes,
-clearing context between them** so each pass looks fresh and isn't anchored by the
-last.
+At run time, pick the **newest slug** from the agent's available model list that
+matches each family (e.g. highest Opus, the fast Composer variant, highest GPT).
+Do **not** hardcode version numbers here — they change often.
+
+Each reviewer is a `generalPurpose` subagent with `readonly: true`. Give each a
+clean context — same diff, same instructions, no peeking at other reviewers'
+output.
+
+## Orchestration workflow
+
+1. **Gather the diff** — branch vs base, uncommitted changes, or a checked-out PR
+   branch. Read surrounding code, not just hunks.
+2. **Launch all three reviewers in one message** — three parallel Task calls, one
+   per family above, each with the resolved latest slug.
+3. **Pool findings** — cross-model agreement is strong signal; single-model hits are
+   suspects until verified.
+4. **Verify before reporting** — re-read the actual code for every finding. Quote
+   the lines that prove it. Drop anything you can't substantiate.
+5. **Synthesize** — one merged report: deduplicate, rank by severity, explicit verdict.
+
+If a subagent fails, retry it once. If it still fails, note the gap and continue
+with the reviewers that succeeded — do not add a fourth model.
+
+### Subagent prompt
+
+Use this shape for each reviewer (fill in repo path and diff):
+
+```text
+You are an adversarial PR reviewer. Find real bugs — not style nits.
+
+Repository: <absolute path>
+Diff scope: <branch changes | uncommitted changes | describe PR/branch>
+Base branch: <only if branch changes against a non-default base>
+
+<full diff or clear pointer to what changed>
+
+For each finding report:
+- Severity: blocker / major / minor
+- Location: file:line
+- The bug (quote proving lines)
+- How it fails (concrete scenario)
+- Fix (minimal change or question for author)
+
+End with verdict: merge | merge after fixes | do not merge.
+Do not invent findings. "No blocking issues" is valid if genuine.
+```
 
 ## What to scrutinize
 
@@ -78,6 +114,7 @@ For each finding:
 - **The bug** — what's wrong and the lines that prove it (quote them).
 - **How it fails** — the concrete input or scenario that triggers it.
 - **Fix** — the minimal change, or the question to ask the author if unsure.
+- **Agreement** — which reviewers flagged it (e.g. 3/3, 2/3, 1/3).
 
 End with an explicit **verdict**: *merge*, *merge after fixes* (list the
 blockers), or *do not merge / rethink the approach* (say why). Don't hedge — a
