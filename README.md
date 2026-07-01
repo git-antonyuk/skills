@@ -23,7 +23,9 @@ skills/
 | `code-kiss` | engineering | Keep It Simple — biases code toward the simplest solution that solves the actual problem; flags over-engineering, premature flexibility, and needless cleverness. Stack-agnostic. |
 | `code-dry` | engineering | Don't Repeat Yourself — gives each piece of knowledge one authoritative source, while guarding against premature/over-abstraction (Rule of Three). Stack-agnostic. |
 | `pr-review` | engineering | Slow, adversarial PR/diff review that optimizes for finding real bugs (not approving fast) — built to be run independently by several models and synthesized. Stack- and model-agnostic. |
+| `alex-reviewer` | engineering | Review frontend code (Vue 3 + TypeScript) the way Alex does — distilled from 1000+ real PR comments. Covers tests, typing, composables & DRY, Vue/i18n idioms, error handling, scope discipline, and review tone. |
 | `write-for-human` | writing | Write and explain like a human, not an AI — short, answers only what was asked, no flattery, no em-dashes or AI tells, plus plain-words/examples/analogy explanation with a self-audit second pass. |
+| `distill` | writing | Boil a wall of AI-generated text down to the core — strip the noise, find the one idea, rebuild small with an example and analogy. Answers only what was asked. Stack-agnostic. |
 
 ## Installing a skill
 
