@@ -26,6 +26,7 @@ skills/
 | `alex-reviewer` | engineering | Review frontend code (Vue 3 + TypeScript) the way Alex does — distilled from 1000+ real PR comments. Covers tests, typing, composables & DRY, Vue/i18n idioms, error handling, scope discipline, and review tone. |
 | `write-for-human` | writing | Write and explain like a human, not an AI — short, answers only what was asked, no flattery, no em-dashes or AI tells, plus plain-words/examples/analogy explanation with a self-audit second pass. |
 | `distill` | writing | Boil a wall of AI-generated text down to the core — strip the noise, find the one idea, rebuild small with an example and analogy. Answers only what was asked. Stack-agnostic. |
+| `grilling` | productivity | Interrogate a plan or design one question at a time before building — proposes its own answer to each, checks the codebase first, and drops into `learning-worked-example` when a question exposes a real knowledge gap. |
 
 ## Installing a skill
 
