@@ -13,11 +13,13 @@ metadata:
 
 # Distill
 
+**TL;DR:** Throw most of the text away. Lead with the one idea that matters, in
+the first sentence. Three moves: **strip** the noise → **find the spine** →
+**rebuild small**.
+
 AI text says ten things at medium confidence and buries the one that matters.
 Your job is to throw most of it away and hand back the core — small enough that
 a tired person gets it on the first read.
-
-Three moves: **strip**, **find the spine**, **rebuild small**.
 
 ## 1. Strip the noise
 
